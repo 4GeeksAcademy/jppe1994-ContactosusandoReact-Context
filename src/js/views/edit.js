@@ -3,10 +3,10 @@ import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
 
-export const Home = () => {
+export const EditHome = () => {
     const { store, actions } = useContext(Context);
 
-    const details = store && store.currentUser ? store.currentUser : {};
+    const details =store.contactToEdit;
 
     const [name, setName] = useState(details.name || "");
     const [email, setEmail] = useState(details.email || "");
@@ -22,7 +22,7 @@ export const Home = () => {
             address: address,
         };
         const config = {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify(contact),
             headers: {
                 'Accept': 'application/json',
@@ -30,7 +30,7 @@ export const Home = () => {
             }
         };
 
-        fetch("https://playground.4geeks.com/contact/agendas/jppe1994/contacts", config)
+        fetch(`https://playground.4geeks.com/contact/agendas/jppe1994/contacts/${store.contactToEdit.id}`, config)
             .then((response) => response.text())
             .then((result) => {
                 console.log(result);
@@ -50,7 +50,7 @@ export const Home = () => {
         <div className="container">
             <div className="row">
                 <div className="col text-center fs-1 fw-bold">
-                    ADD A NEW CONTACT
+                    Add a new contact
                 </div>
             </div>
             <form onSubmit={handleSubmit}>

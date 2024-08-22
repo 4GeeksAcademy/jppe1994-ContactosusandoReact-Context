@@ -1,4 +1,7 @@
+import { redirect } from "react-router";
+
 const getState = ({ getStore, getActions, setStore }) => {
+
 	return {
 		store: {
 			demo: [
@@ -12,17 +15,51 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			contacts: [
+				
+			],
+			contactToEdit: {
+
+			}
+		
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+			setContacts: (contacts) => { 
+				setStore({ contacts: contacts })
+			},
+			deleteContact: (indexToDelete) => {
+				// const store = getStore();
+				// setStore({ contacts: store.contacts.filter((contact, index) => index != indexToDelete) });
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch("https://playground.4geeks.com/contact/agendas/jppe1994/contacts/"+indexToDelete, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+						fetch ('https://playground.4geeks.com/contact/agendas/jppe1994/contacts')
+						.then((response)=> response.json() )
+						.then((data)=> setStore({ contacts: data.contacts }))
+					})
+			},
 			loadSomeData: () => {
 				/**
 					fetch().then().then(data => setStore({ "foo": data.bar }))
 				*/
+				
+				fetch ('https://playground.4geeks.com/contact/agendas/jppe1994/contacts')
+				.then((response)=> response.json() )
+				.then((data)=> setStore({ contacts: data.contacts }))
+
+				
 			},
 			changeColor: (index, color) => {
 				//get the store

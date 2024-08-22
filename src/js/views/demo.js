@@ -8,35 +8,76 @@ import "../../styles/demo.css";
 export const Demo = () => {
 	const { store, actions } = useContext(Context);
 
+	const deleteContact = (id) => {
+		actions.deleteContact(id);
+	};
+
+	const setContactToEdit=(contact) =>{
+		store.contactToEdit = contact;
+	}
+
 	return (
 		<div className="container">
 			<ul className="list-group">
-				{store.demo.map((item, index) => {
+				{store.contacts.map((item, index) => {
 					return (
 						<li
 							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
+							className="list-group-item "
+							>
+							<div className= "row row1 fs-4">
+								<div className= "col">
+									<img src="https://i.pinimg.com/474x/bd/f4/d3/bdf4d3fe1f9a17136319df951fe9b3e0.jpg" alt="contact-photo" className="img-circle mt-1"></img>
+								</div>
+								<div className= "col mx-5 my-4">
+									<div className= "row">
+										<div className= "col">
+											{item.name}
+										</div>	
+									</div>
+								
+									<div className= "row">
+										<div className= "col">
+											{item.address}
+											
+										</div>	
+									</div>
+									<div className= "row">
+										<div className= "col">
+											{item.phone}
+										</div>	
+									</div>
+								
+									<div className= "row">
+										<div className= "col">
+											{item.email}
+										</div>	
+									</div>
+								</div>
+								<div className= "col d-flex justify-content-end pt-5 mx-0">
+									<div>
+										<Link to="/edit" >
+										<button className="btn btn-success mx-2 " onClick={()=>setContactToEdit(item)}>
+											Edit contact
+
+												</button>
+										</Link>
+									</div>
+									<div>
+										<button className="btn btn-success" onClick={()=>actions.deleteContact(item.id)}>
+											Delete
+
+										</button>
+									</div>
+								</div>
+							</div>
 						</li>
 					);
 				})}
 			</ul>
 			<br />
 			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
+				<button className="btn btn-primary">Add Contact</button>
 			</Link>
 		</div>
 	);
